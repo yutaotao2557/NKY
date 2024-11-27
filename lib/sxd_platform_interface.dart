@@ -26,4 +26,12 @@ abstract class SxdPlatform extends PlatformInterface {
   Future<String?> getPlatformVersion() {
     throw UnimplementedError('platformVersion() has not been implemented.');
   }
+
+  Future<dynamic> setDatalogerByP0x18(Map<String,dynamic> map);
+
+  Future<dynamic> parserPro0x18(String hex);
+
+  Future<dynamic> setDatalogerByP0x19(Map<String,dynamic> map);
+
+  Future<dynamic> parserPro0x19(String hex);
 }

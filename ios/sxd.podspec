@@ -20,4 +20,12 @@ Pod::Spec.new do |s|
   # Flutter.framework does not contain a i386 slice.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
   s.swift_version = '5.0'
+
+  //.framework文件路径
+  s.vendored_frameworks = 'Framework/AECC_Setnet_SDK.framework'
+  //.a文件路径
+  s.vendored_libraries = 'Framework/*.a'
+  //.bundle资源文件路径
+  s.resource ='Framework/*.bundle'
+  s.public_header_files = 'Classes/**/*.h'
 end

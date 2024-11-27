@@ -1,6 +1,7 @@
 import Flutter
 import UIKit
 
+
 public class SxdPlugin: NSObject, FlutterPlugin {
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: "sxd", binaryMessenger: registrar.messenger())

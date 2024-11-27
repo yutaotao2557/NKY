@@ -10,8 +10,17 @@ class MethodChannelSxd extends SxdPlatform {
   final methodChannel = const MethodChannel('sxd');
 
   @override
-  Future<String?> getPlatformVersion() async {
-    final version = await methodChannel.invokeMethod<String>('getPlatformVersion');
-    return version;
-  }
+  Future<String?> getPlatformVersion() async => await methodChannel.invokeMethod<String>('getPlatformVersion');
+
+  @override
+  Future<dynamic> setDatalogerByP0x18(Map<String, dynamic> map) async => await methodChannel.invokeMethod<String>('setDatalogerByP0x18');
+
+  @override
+  Future<dynamic> parserPro0x18(String hex) async => await methodChannel.invokeMethod<String>('parserPro0x18');
+
+  @override
+  Future<dynamic> setDatalogerByP0x19(Map<String, dynamic> map) async => await methodChannel.invokeMethod<String>('setDatalogerByP0x19');
+
+  @override
+  Future<dynamic> parserPro0x19(String hex) async => await methodChannel.invokeMethod<String>('parserPro0x19');
 }
