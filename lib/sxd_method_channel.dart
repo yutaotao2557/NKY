@@ -3,9 +3,7 @@ import 'package:flutter/services.dart';
 
 import 'sxd_platform_interface.dart';
 
-/// An implementation of [SxdPlatform] that uses method channels.
 class MethodChannelSxd extends SxdPlatform {
-  /// The method channel used to interact with the native platform.
   @visibleForTesting
   final methodChannel = const MethodChannel('sxd');
 
@@ -13,14 +11,14 @@ class MethodChannelSxd extends SxdPlatform {
   Future<String?> getPlatformVersion() async => await methodChannel.invokeMethod<String>('getPlatformVersion');
 
   @override
-  Future<dynamic> setDatalogerByP0x18(Map<String, dynamic> map) async => await methodChannel.invokeMethod<String>('setDatalogerByP0x18');
+  Future<dynamic> setDatalogerByP0x18(Map<String, dynamic> map) async => await methodChannel.invokeMethod('setDatalogerByP0x18', map);
 
   @override
-  Future<dynamic> parserPro0x18(String hex) async => await methodChannel.invokeMethod<String>('parserPro0x18');
+  Future<dynamic> parserPro0x18(String hex) async => await methodChannel.invokeMethod('parserPro0x18', hex);
 
   @override
-  Future<dynamic> setDatalogerByP0x19(Map<String, dynamic> map) async => await methodChannel.invokeMethod<String>('setDatalogerByP0x19');
+  Future<dynamic> setDatalogerByP0x19(Map<String, dynamic> map) async => await methodChannel.invokeMethod('setDatalogerByP0x19', map);
 
   @override
-  Future<dynamic> parserPro0x19(String hex) async => await methodChannel.invokeMethod<String>('parserPro0x19');
+  Future<dynamic> parserPro0x19(String hex) async => await methodChannel.invokeMethod('parserPro0x19', hex);
 }

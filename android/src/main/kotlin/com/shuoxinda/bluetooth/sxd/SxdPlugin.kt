@@ -1,7 +1,8 @@
 package com.shuoxinda.bluetooth.sxd
 
+import android.util.Log
 import com.alibaba.fastjson.JSONObject
-import com.nky.protocal.proUtil.ProtocolTool
+import com.shuoxinda.bluetooth.protocal.proUtil.ProtocolTool
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -22,13 +23,17 @@ class SxdPlugin : FlutterPlugin, MethodCallHandler {
     }
 
     override fun onMethodCall(call: MethodCall, result: Result) {
-        when (call.method) {
-            "getPlatformVersion" -> result.success("Android ${android.os.Build.VERSION.RELEASE}")
-            "setDatalogerByP0x18" -> setDatalogerByP0x18(call.arguments as HashMap<String, Any>, result)
-            "parserPro0x18" -> parserPro0x18(call.arguments as String, result)
-            "getDatalogerByP0x19" -> getDatalogerByP0x19(call.arguments as HashMap<String, Any>, result)
-            "parserPro0x19" -> parserPro0x19(call.arguments as String, result)
-            else -> result.notImplemented()
+        try {
+            when (call.method) {
+                "getPlatformVersion" -> result.success("Android ${android.os.Build.VERSION.RELEASE}")
+                "setDatalogerByP0x18" -> setDatalogerByP0x18(call.arguments as HashMap<String, Any>, result)
+                "parserPro0x18" -> parserPro0x18(call.arguments as String, result)
+                "setDatalogerByP0x19" -> getDatalogerByP0x19(call.arguments as HashMap<String, Any>, result)
+                "parserPro0x19" -> parserPro0x19(call.arguments as String, result)
+                else -> result.notImplemented()
+            }
+        } catch (e: Exception) {
+            Log.e("TTT", "e:${e.message}")
         }
     }
 
@@ -45,7 +50,6 @@ class SxdPlugin : FlutterPlugin, MethodCallHandler {
     }
 
     private fun getDatalogerByP0x19(map: HashMap<String, Any>, res: Result) {
-        val map: HashMap<String, Any> = HashMap()
         ProtocolTool.getDatalogerByP0x19(JSONObject(map)) {
             res.success(it)
         }
