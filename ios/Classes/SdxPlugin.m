@@ -15,9 +15,14 @@
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
     if ([@"getPlatformVersion" isEqualToString:call.method]) {
         result([@"iOS " stringByAppendingString:[[UIDevice currentDevice] systemVersion]]);
-    } else if(@"enCode19Or18WithParams" isEqualToString:call.method){
-        [[AECCSetnetManager sharedInstance] enCode19Or18WithParams:call.arguments];
-        result([@"iOS " stringByAppendingString:[[UIDevice currentDevice] systemVersion]]);
+    } else if(@"enCodeWithParams" isEqualToString:call.method){
+        [
+            [AECCSetnetManager sharedInstance] enCodeWithParams:call.arguments
+                block:^(NSDictionary * _Nonnull encryptionDataDic)
+                {
+                    result(encryptionDataDic);
+                }
+        ];
     } else if(@"encode26WithPatams" isEqualToString:call.method){
         result([@"iOS " stringByAppendingString:[[UIDevice currentDevice] systemVersion]]);
     } else if(@"encode17WithPatams" isEqualToString:call.method){
