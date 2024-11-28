@@ -77,15 +77,14 @@ class _MyAppState extends State<MyApp> {
             body: Column(children: [
               Expanded(
                   child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(10),
-                margin: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                    color: const Color(0xffe5e5e5),
-                    borderRadius: BorderRadius.circular(6),
-                    boxShadow: const [BoxShadow(offset: Offset(1, 1), blurRadius: 1, color: Color(0xffcccccc))]),
-                child: Text(_log, style: const TextStyle(fontSize: 14, color: Color(0xff333333))),
-              )),
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(10),
+                      margin: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          color: const Color(0xffe5e5e5),
+                          borderRadius: BorderRadius.circular(6),
+                          boxShadow: const [BoxShadow(offset: Offset(1, 1), blurRadius: 1, color: Color(0xffcccccc))]),
+                      child: SingleChildScrollView(child: Text(_log, style: const TextStyle(fontSize: 14, color: Color(0xff333333)))))),
               Row(children: [
                 const SizedBox(width: 20),
                 _btn("发送18", _datalog18),
