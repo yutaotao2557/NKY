@@ -37,7 +37,7 @@ class _MyAppState extends State<MyApp> {
       "commandId": 19,
       "param19Obj": [55]
     };
-    String data = ((await _sxdPlugin.setDatalogerByP0x19(sdkData)) as List<int>).toHex();
+    String data = (await _sxdPlugin.setDatalogerByP0x19(sdkData))?.toHex() ?? "---";
     setState(() {
       _log += "$data\n";
     });
@@ -50,7 +50,7 @@ class _MyAppState extends State<MyApp> {
         {"paramId": 55, "param": 0}
       ]
     };
-    String data = ((await _sxdPlugin.setDatalogerByP0x18(sdk0x18Data)) as List<int>).toHex();
+    String data = (await _sxdPlugin.setDatalogerByP0x18(sdk0x18Data))?.toHex() ?? "---";
     setState(() {
       _log += "$data\n";
     });

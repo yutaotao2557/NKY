@@ -15,10 +15,10 @@ class MockSxdPlatform with MockPlatformInterfaceMixin implements SxdPlatform {
   Future parserPro0x19(String hex) => Future.value("parserPro0x19");
 
   @override
-  Future setDatalogerByP0x18(Map<String, dynamic> map) => Future.value("setDatalogerByP0x18");
+  Future<List<int>?> setDatalogerByP0x18(Map<String, dynamic> map) => Future.value([]);
 
   @override
-  Future setDatalogerByP0x19(Map<String, dynamic> map) => Future.value("setDatalogerByP0x19");
+  Future<List<int>?> setDatalogerByP0x19(Map<String, dynamic> map) => Future.value([]);
 }
 
 void main() {
