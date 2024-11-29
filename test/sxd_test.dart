@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sxd/sxd.dart';
 import 'package:sxd/sxd_platform_interface.dart';
@@ -9,10 +11,10 @@ class MockSxdPlatform with MockPlatformInterfaceMixin implements SxdPlatform {
   Future<String?> getPlatformVersion() => Future.value('42');
 
   @override
-  Future parserPro0x18(String hex) => Future.value("parserPro0x18");
+  Future parserPro0x18(Uint8List hex) => Future.value("parserPro0x18");
 
   @override
-  Future parserPro0x19(String hex) => Future.value("parserPro0x19");
+  Future parserPro0x19(Uint8List hex) => Future.value("parserPro0x19");
 
   @override
   Future<List<int>?> setDatalogerByP0x18(Map<String, dynamic> map) => Future.value([]);

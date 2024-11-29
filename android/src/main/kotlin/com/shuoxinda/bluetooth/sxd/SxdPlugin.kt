@@ -1,6 +1,7 @@
 package com.shuoxinda.bluetooth.sxd
 
 import android.util.Log
+
 import com.alibaba.fastjson.JSONObject
 import com.shuoxinda.bluetooth.protocal.proUtil.ProtocolTool
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -27,9 +28,9 @@ class SxdPlugin : FlutterPlugin, MethodCallHandler {
             when (call.method) {
                 "getPlatformVersion" -> result.success("Android ${android.os.Build.VERSION.RELEASE}")
                 "setDatalogerByP0x18" -> setDatalogerByP0x18(call.arguments as HashMap<String, Any>, result)
-                "parserPro0x18" -> parserPro0x18(call.arguments as String, result)
+                "parserPro0x18" -> parserPro0x18(call.arguments as ByteArray, result)
                 "setDatalogerByP0x19" -> getDatalogerByP0x19(call.arguments as HashMap<String, Any>, result)
-                "parserPro0x19" -> parserPro0x19(call.arguments as String, result)
+                "parserPro0x19" -> parserPro0x19(call.arguments as ByteArray, result)
                 else -> result.notImplemented()
             }
         } catch (e: Exception) {
@@ -43,8 +44,8 @@ class SxdPlugin : FlutterPlugin, MethodCallHandler {
         }
     }
 
-    private fun parserPro0x18(msg: String, res: Result) {
-        ProtocolTool.parserPro0x18(msg.toByteArray()) {
+    private fun parserPro0x18(msg: ByteArray, res: Result) {
+        ProtocolTool.parserPro0x18(msg) {
             res.success(it)
         }
     }
@@ -55,9 +56,28 @@ class SxdPlugin : FlutterPlugin, MethodCallHandler {
         }
     }
 
-    private fun parserPro0x19(msg: String, res: Result) {
-        ProtocolTool.parserPro0x19(msg.toByteArray()) {
-            res.success(it)
+    private fun parserPro0x19(msg: ByteArray, res: Result) {
+        var str = ""
+        msg.map { str += String.format("%02X", it) }
+
+        Log.e("TTT", str)
+
+        val data =
+            "01280006011e0119cc4c5f3d2845525c7b8243dbfcfe198af1256ccfb42524416a16b49ea0cddc2254a1975c35c00ab3e1612c3515bb7e5b0f1f2720c606df289950227fdd460680751688b49771fb01ca12224c92c260d6ac63dcfe6b8219fe4bb7971a3c27214a1186a6beaf5855bd102045c1b3ab1bd203f82d6a8d5ac53e9279c1926c69e2f653c7c32705754988adbf30d9a3303a6a2392f6afcf07a1f300e46581ac12bf2511bce64bc0827a81055c4a8c2731d984651db63fb92e38c91e10bad3239f4745c80d1156a0fdd30fd08d7db975778adfd25414f71df64bb42260ae5f7454ec0b6d88d9b5d117e1b58c765e9e5f4ee57938a304d9032cad72a964da03d40226b28855b2515858e2b66d9328ca19ca031fb666a6e89e381a60d9491aa522ecd647";
+
+        ProtocolTool.parserPro0x19(hexStringToByteArray(data)) {
+            Log.e("TTT", "tttt:$it")
+            res.success(it.toString())
         }
+    }
+
+    private fun hexStringToByteArray(hexString: String): ByteArray {
+        val cleanedHex = hexString.replace(" ", "")
+        val bytes = ByteArray(cleanedHex.length / 2)
+        for (i in cleanedHex.indices step 2) {
+            val hexPair = cleanedHex.substring(i, i + 2)
+            bytes[i / 2] = hexPair.toInt(16).toByte()
+        }
+        return bytes
     }
 }

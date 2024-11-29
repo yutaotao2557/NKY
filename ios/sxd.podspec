@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'sxd'
-  s.version          = '0.0.1'
+  s.version          = '0.0.2'
   s.summary          = '硕欣达设备配网插件'
   s.description      = <<-DESC
 硕欣达设备配网插件

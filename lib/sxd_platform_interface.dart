@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'sxd_method_channel.dart';
@@ -22,9 +24,9 @@ abstract class SxdPlatform extends PlatformInterface {
 
   Future<List<int>?> setDatalogerByP0x18(Map<String, dynamic> map);
 
-  Future<dynamic> parserPro0x18(String hex);
+  Future<dynamic> parserPro0x18(Uint8List hex);
 
   Future<List<int>?> setDatalogerByP0x19(Map<String, dynamic> map);
 
-  Future<dynamic> parserPro0x19(String hex);
+  Future<dynamic> parserPro0x19(Uint8List hex);
 }

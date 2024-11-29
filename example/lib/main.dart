@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
@@ -56,6 +59,26 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  Future<void> _parse19() async {
+    String data = "01280006011e0119cc4c5f3d2845525c7b8243dbfcfe198af1256ccfb42524416a16b49ea0cddc2254a1975c35c00ab3e1612c3515bb7e5b0f1f27"
+        "20c606df289950227fdd460680751688b49771fb01ca12224c92c260d6ac63dcfe6b8219fe4bb7971a3c27214a1186a6beaf5855bd102045c1b3ab1bd203f82d6a8d5ac53e9279c1926c69e2f653c7c32705754988adbf30d9a3303a6a2392f6afcf07a1f300e46581ac12bf2511bce64bc0827a81055c4a8c2731d984651db63fb92e38c91e10bad3239f4745c80d1156a0fdd30fd08d7db975778adfd25414f71df64bb42260ae5f7454ec0b6d88d9b5d117e1b58c765e9e5f4ee57938a304d9032cad72a964da03d40226b28855b2515858e2b66d9328ca19ca031fb666a6e89e381a60d9491aa522ecd647";
+    var bytes = Uint8List.fromList(hex2Bytes(data));
+    print(bytes.sublist(200));
+    String back = await _sxdPlugin.parserPro0x19(bytes);
+    setState(() {
+      _log += "${back}\n";
+    });
+  }
+
+  Uint8List hex2Bytes(String hex) {
+    if (hex.length % 2 != 0) return Uint8List.fromList([]);
+    List<int> back = [];
+    for (int i = 0; i < hex.length; i += 2) {
+      back.add(int.parse(hex.substring(i, i + 2), radix: 16));
+    }
+    return Uint8List.fromList(back);
+  }
+
   Future<void> _getVersion() async {
     String platformVersion;
     try {
@@ -85,21 +108,18 @@ class _MyAppState extends State<MyApp> {
                           borderRadius: BorderRadius.circular(6),
                           boxShadow: const [BoxShadow(offset: Offset(1, 1), blurRadius: 1, color: Color(0xffcccccc))]),
                       child: SingleChildScrollView(child: Text(_log, style: const TextStyle(fontSize: 14, color: Color(0xff333333)))))),
-              Row(children: [
-                const SizedBox(width: 20),
-                _btn("发送18", _datalog18),
-                const SizedBox(width: 10),
-                _btn("发送19", _datalog19),
-                const SizedBox(width: 10),
-                _btn("清空日志", _clearLog),
-                const SizedBox(width: 10),
+              Wrap(spacing: 10, runSpacing: 10, children: [
                 _btn("获取系统版本", _getVersion),
-                const SizedBox(width: 20),
+                _btn("发送18", _datalog18),
+                _btn("发送19", _datalog19),
+                _btn("解析18", _datalog18),
+                _btn("解析19", _parse19),
+                _btn("清空日志", _clearLog),
               ]),
               const SizedBox(height: 20),
             ])));
   }
 
-  Widget _btn(String name, VoidCallback callback) => Expanded(
-      child: FilledButton(onPressed: () => callback(), child: Text(name, style: const TextStyle(fontSize: 12, color: Colors.white))));
+  Widget _btn(String name, VoidCallback callback) =>
+      FilledButton(onPressed: () => callback(), child: Text(name, style: const TextStyle(fontSize: 12, color: Colors.white)));
 }

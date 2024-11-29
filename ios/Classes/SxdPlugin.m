@@ -23,14 +23,13 @@
                     result(encryptionDataDic);
                 }
         ];
-    } else if([@"encode26WithPatams" isEqualToString:call.method]){
-        result([@"iOS " stringByAppendingString:[[UIDevice currentDevice] systemVersion]]);
-    } else if([@"encode17WithPatams" isEqualToString:call.method]){
-        result([@"iOS " stringByAppendingString:[[UIDevice currentDevice] systemVersion]]);
-    } else if([@"deCode17WithParams" isEqualToString:call.method]){
-        result([@"iOS " stringByAppendingString:[[UIDevice currentDevice] systemVersion]]);
-    } else if([@"deCodeWithParams" isEqualToString:call.method]){
-        result([@"iOS " stringByAppendingString:[[UIDevice currentDevice] systemVersion]]);
+    } else if([@"DeCodeWithInputData" DeCodeWithInputData:call.method]){
+        [
+            [AECCSetnetManager sharedInstance] DeCodeWithInputData:call.arguments
+            block:^(NSDictionary * _Nonnull decryptDataDic) {
+                result(decryptDataDic);
+            }
+        ];
     }  else {
         result(FlutterMethodNotImplemented);
     }

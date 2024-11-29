@@ -1,7 +1,6 @@
 package com.shuoxinda.bluetooth.protocal.version6;
 
 
-
 import android.util.Log;
 
 import com.shuoxinda.bluetooth.protocal.Param;
@@ -46,7 +45,7 @@ public class Protocol0X19 extends Protocol {
         int length = ProtocolConstant.DATA_LOGGING_SN_LENGTH + ProtocolConstant.PARAM_NO_COUNT_LENGTH + protocol._paramNos.length;
         if (length % 16 == 0) {
             protocol._aesEncryptZero = new byte[0];
-        }else {
+        } else {
             protocol._aesEncryptZero = new byte[16 - length % 16];
         }
 
@@ -97,6 +96,7 @@ public class Protocol0X19 extends Protocol {
 
     public static List<Param> readParams(byte[] response) {
         List<Param> params = new ArrayList<>();
+        Log.e("TTT", "isDataResponseSuccess:" + isDataResponseSuccess(response));
         if (isDataResponseSuccess(response)) {
             byte[] dataArea = Protocol.getDecodeDataArea(response);
             //数据长度
@@ -104,10 +104,12 @@ public class Protocol0X19 extends Protocol {
             byte[] _dataLength = new byte[ProtocolConstant.DATA_LENGTH];
             System.arraycopy(response, start, _dataLength, 0, ProtocolConstant.DATA_LENGTH);
             int dataLength = ByteUtils.convert2BytesToUnsignedInt(_dataLength);
+            Log.e("TTT", "dataLength:" + dataLength);
             //有效数据
             int paramsLength = getParamsLength(dataLength);
             byte[] _params = new byte[paramsLength];
             System.arraycopy(dataArea, getDataAreaSrcPos(), _params, 0, paramsLength);
+            Log.e("TTT", "paramsLength:" + paramsLength);
             //遍历取出有效数据
             int readPosition = 0;
             while (readPosition < paramsLength) {
@@ -137,6 +139,8 @@ public class Protocol0X19 extends Protocol {
      * 获取状态码，0-成功，1-失败
      */
     public static boolean isDataResponseSuccess(byte[] response) {
+        Log.e("TTT", "---" + CRC16Util.crc16Verify(response));
+
         if (CRC16Util.crc16Verify(response)) {
             byte[] dataArea = Protocol.getDecodeDataArea(response);
             int statusCode = dataArea[ProtocolConstant.DATA_LOGGING_SN_LENGTH + ProtocolConstant.PARAM_NO_COUNT_LENGTH];
