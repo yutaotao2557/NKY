@@ -1,6 +1,6 @@
-package com.shuoxinda.bluetooth.protocal;
+package com.shuoxinda.bluetooth.sxd.protocal;
 
-import com.shuoxinda.bluetooth.protocal.util.ByteUtils;
+import com.shuoxinda.bluetooth.sxd.protocal.util.ByteUtils;
 
 /**
  * 数服协议基类

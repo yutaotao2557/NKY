@@ -1,7 +1,7 @@
-package com.shuoxinda.bluetooth.protocal.modbus;
+package com.shuoxinda.bluetooth.sxd.protocal.modbus;
 
 
-import com.shuoxinda.bluetooth.protocal.util.ByteUtils;
+import com.shuoxinda.bluetooth.sxd.protocal.util.ByteUtils;
 
 /**
  * Modbus协议基类

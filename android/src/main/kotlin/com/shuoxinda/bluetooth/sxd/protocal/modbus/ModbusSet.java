@@ -1,8 +1,8 @@
-package com.shuoxinda.bluetooth.protocal.modbus;
+package com.shuoxinda.bluetooth.sxd.protocal.modbus;
 
 
-import com.shuoxinda.bluetooth.protocal.util.ByteUtils;
-import com.shuoxinda.bluetooth.protocal.util.CRC16Util;
+import com.shuoxinda.bluetooth.sxd.protocal.util.ByteUtils;
+import com.shuoxinda.bluetooth.sxd.protocal.util.CRC16Util;
 
 /**
  * 支持功能码为0X10连续寄存器地址批量设置

@@ -1,4 +1,4 @@
-package com.shuoxinda.bluetooth.protocal.util;
+package com.shuoxinda.bluetooth.sxd.protocal.util;
 
 import java.nio.charset.StandardCharsets;
 
@@ -242,7 +242,7 @@ public class ByteUtils {
         return joinBytes;
     }
 
-    public static byte[] stringToBytes(String value){
+    public static byte[] stringToBytes(String value) {
         return value.getBytes();
     }
 

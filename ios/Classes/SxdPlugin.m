@@ -23,7 +23,7 @@
                     result(encryptionDataDic);
                 }
         ];
-    } else if([@"DeCodeWithInputData" DeCodeWithInputData:call.method]){
+    } else if([@"DeCodeWithInputData" isEqualToString:call.method]){
         [
             [AECCSetnetManager sharedInstance] DeCodeWithInputData:call.arguments
             block:^(NSDictionary * _Nonnull decryptDataDic) {

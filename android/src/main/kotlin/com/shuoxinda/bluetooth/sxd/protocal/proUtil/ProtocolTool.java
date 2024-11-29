@@ -1,11 +1,11 @@
-package com.shuoxinda.bluetooth.protocal.proUtil;
+package com.shuoxinda.bluetooth.sxd.protocal.proUtil;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.shuoxinda.bluetooth.protocal.Param;
-import com.shuoxinda.bluetooth.protocal.ProtocolCallback;
-import com.shuoxinda.bluetooth.protocal.version6.Protocol0X18;
-import com.shuoxinda.bluetooth.protocal.version6.Protocol0X19;
+import com.shuoxinda.bluetooth.sxd.protocal.Param;
+import com.shuoxinda.bluetooth.sxd.protocal.ProtocolCallback;
+import com.shuoxinda.bluetooth.sxd.protocal.version6.Protocol0X18;
+import com.shuoxinda.bluetooth.sxd.protocal.version6.Protocol0X19;
 
 import java.util.ArrayList;
 import java.util.List;

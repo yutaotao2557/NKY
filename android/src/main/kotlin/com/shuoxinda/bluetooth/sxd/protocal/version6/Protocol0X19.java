@@ -1,9 +1,12 @@
-package com.shuoxinda.bluetooth.protocal.version3;
+package com.shuoxinda.bluetooth.sxd.protocal.version6;
 
 
+import android.util.Log;
 
-import com.shuoxinda.bluetooth.protocal.Param;
-import com.shuoxinda.bluetooth.protocal.util.ByteUtils;
+import com.shuoxinda.bluetooth.sxd.protocal.Param;
+import com.shuoxinda.bluetooth.sxd.protocal.util.AESCBCUtil;
+import com.shuoxinda.bluetooth.sxd.protocal.util.ByteUtils;
+import com.shuoxinda.bluetooth.sxd.protocal.util.CRC16Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,15 +41,30 @@ public class Protocol0X19 extends Protocol {
             currentPos = (i + 1) * 2;
         }
 
-        //数据区长度
+        //数据区长度（未包含补0）
         int length = ProtocolConstant.DATA_LOGGING_SN_LENGTH + ProtocolConstant.PARAM_NO_COUNT_LENGTH + protocol._paramNos.length;
+        if (length % 16 == 0) {
+            protocol._aesEncryptZero = new byte[0];
+        } else {
+            protocol._aesEncryptZero = new byte[16 - length % 16];
+        }
 
-        //数据长度=设备地址长度+功能码长度+数据区长度
+        //数据长度=设备地址长度+功能码长度+数据区长度（不包含补0区）
         protocol.dataLength = ProtocolConstant.DEVICE_ADDRESS_LENGTH + ProtocolConstant.FUNCTION_CODE_LENGTH + length;
         protocol._dataLength = ByteUtils.intTo2Byte(protocol.dataLength);
 
-        //数据区数据
-        protocol._dataArea = ByteUtils.join(protocol._dataloggingSn, protocol._paramNoCount, protocol._paramNos);
+        //未加密的数据区数据
+        protocol._dataArea = ByteUtils.join(protocol._dataloggingSn, protocol._paramNoCount, protocol._paramNos, protocol._aesEncryptZero);
+        protocol._dataAreaWithAES = AESCBCUtil.encode(protocol._dataArea);
+
+        //算出总长度
+        protocol.totalLength = ProtocolConstant.PROTOCOL_VERSION_LENGTH + ProtocolConstant.DATA_LENGTH + protocol.dataLength + protocol._aesEncryptZero.length + ProtocolConstant.CRC_16_LENGTH;
+        protocol._totalLength = ByteUtils.intTo2Byte(protocol.totalLength);
+
+        //crc16检验内容
+        byte[] crc16CalcContent = ByteUtils.join(protocol._totalLength, protocol._protocolVersion, protocol._dataLength, new byte[]{protocol._deviceAddress}, new byte[]{protocol.get_functionCode()}, protocol._dataAreaWithAES);
+        protocol.crc16 = CRC16Util.calcCrc16(crc16CalcContent);
+        protocol._crc16 = ByteUtils.intTo2Byte(protocol.crc16);
 
         return protocol;
     }
@@ -78,18 +96,20 @@ public class Protocol0X19 extends Protocol {
 
     public static List<Param> readParams(byte[] response) {
         List<Param> params = new ArrayList<>();
-        byte[] dataArea = Protocol.getDataArea(response);
-        int statusCode = dataArea[ProtocolConstant.DATA_LOGGING_SN_LENGTH + ProtocolConstant.PARAM_NO_COUNT_LENGTH];
-        if (statusCode == ProtocolConstant.STATUS_CODE_SUCCESS) {
+        Log.e("TTT", "isDataResponseSuccess:" + isDataResponseSuccess(response));
+        if (isDataResponseSuccess(response)) {
+            byte[] dataArea = getDecodeDataArea(response);
             //数据长度
-            int start = ProtocolConstant.COMMUNICATION_NO_LENGTH + ProtocolConstant.PROTOCOL_VERSION_LENGTH;
+            int start = ProtocolConstant.DATA_TOTAL_LENGTH + ProtocolConstant.PROTOCOL_VERSION_LENGTH;
             byte[] _dataLength = new byte[ProtocolConstant.DATA_LENGTH];
             System.arraycopy(response, start, _dataLength, 0, ProtocolConstant.DATA_LENGTH);
             int dataLength = ByteUtils.convert2BytesToUnsignedInt(_dataLength);
+            Log.e("TTT", "dataLength:" + dataLength);
             //有效数据
             int paramsLength = getParamsLength(dataLength);
             byte[] _params = new byte[paramsLength];
             System.arraycopy(dataArea, getDataAreaSrcPos(), _params, 0, paramsLength);
+            Log.e("TTT", "paramsLength:" + paramsLength);
             //遍历取出有效数据
             int readPosition = 0;
             while (readPosition < paramsLength) {
@@ -107,10 +127,26 @@ public class Protocol0X19 extends Protocol {
                 byte[] _param = new byte[paramLength];
                 System.arraycopy(_params, readPosition, _param, 0, paramLength);
                 readPosition += paramLength;
+
                 params.add(Param.newInstance(_paramNo, paramNo, _paramLength, paramLength, _param));
             }
         }
         return params;
+    }
+
+    /**
+     * 是否数据响应成功
+     * 获取状态码，0-成功，1-失败
+     */
+    public static boolean isDataResponseSuccess(byte[] response) {
+        Log.e("TTT", "---" + CRC16Util.crc16Verify(response));
+
+        if (CRC16Util.crc16Verify(response)) {
+            byte[] dataArea = getDecodeDataArea(response);
+            int statusCode = dataArea[ProtocolConstant.DATA_LOGGING_SN_LENGTH + ProtocolConstant.PARAM_NO_COUNT_LENGTH];
+            return statusCode == Protocol.ProtocolConstant.STATUS_CODE_SUCCESS;
+        }
+        return false;
     }
 
     /**

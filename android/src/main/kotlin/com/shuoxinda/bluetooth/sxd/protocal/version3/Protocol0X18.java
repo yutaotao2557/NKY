@@ -1,10 +1,10 @@
-package com.shuoxinda.bluetooth.protocal.version3;
+package com.shuoxinda.bluetooth.sxd.protocal.version3;
 
 import androidx.annotation.NonNull;
 
 
-import com.shuoxinda.bluetooth.protocal.Param;
-import com.shuoxinda.bluetooth.protocal.util.ByteUtils;
+import com.shuoxinda.bluetooth.sxd.protocal.Param;
+import com.shuoxinda.bluetooth.sxd.protocal.util.ByteUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,7 +88,7 @@ public class Protocol0X18 extends Protocol {
      * 是否设置成功
      */
     public static boolean isSetSuccess(byte[] response) {
-        byte[] dataArea = Protocol.getDataArea(response);
+        byte[] dataArea = getDataArea(response);
         int statusCode = dataArea[ProtocolConstant.DATA_LOGGING_SN_LENGTH + ProtocolConstant.PARAM_NO_COUNT_LENGTH];
         return statusCode == ProtocolConstant.STATUS_CODE_SUCCESS;
     }

@@ -49,12 +49,9 @@ class MethodChannelSxd extends SxdPlatform {
         return (await methodChannel.invokeMethod('setDatalogerByP0x19', map)) as List<int>;
       } else {
         var back = (await methodChannel.invokeMapMethod("enCodeWithParams", map));
-        // print(back);
-        //{result: 0, msg: Data packaging successful, data: [0, 24, 0, 6, 0, 16, 1, 25, 203, 212, 72, 186, 152, 152, 95, 115, 211, 206, 100, 76, 21, 150, 151, 176, 108, 146]}
         return back?["data"] as List<int>;
       }
     } catch (e) {
-      // print("e:$e");
       return null;
     }
   }
@@ -63,7 +60,7 @@ class MethodChannelSxd extends SxdPlatform {
   Future<dynamic> parserPro0x19(Uint8List bytes) async {
     try {
       if (Platform.isAndroid) {
-        await methodChannel.invokeMethod('parserPro0x19', bytes);
+        return await methodChannel.invokeMethod('parserPro0x19', bytes);
       } else {
         var back = (await methodChannel.invokeMapMethod("DeCodeWithInputData", bytes));
         return back;

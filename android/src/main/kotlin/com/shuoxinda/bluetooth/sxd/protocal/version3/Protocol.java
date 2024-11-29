@@ -1,8 +1,8 @@
-package com.shuoxinda.bluetooth.protocal.version3;
+package com.shuoxinda.bluetooth.sxd.protocal.version3;
 
 
-import com.shuoxinda.bluetooth.protocal.util.ByteUtils;
-import com.shuoxinda.bluetooth.protocal.IProtocol;
+import com.shuoxinda.bluetooth.sxd.protocal.util.ByteUtils;
+import com.shuoxinda.bluetooth.sxd.protocal.IProtocol;
 
 /**
  * 数服协议基础类，由这几部分组成

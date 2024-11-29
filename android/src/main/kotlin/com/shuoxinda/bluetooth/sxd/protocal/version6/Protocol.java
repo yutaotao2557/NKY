@@ -1,9 +1,9 @@
-package com.shuoxinda.bluetooth.protocal.version6;
+package com.shuoxinda.bluetooth.sxd.protocal.version6;
 
 
-import com.shuoxinda.bluetooth.protocal.IProtocol;
-import com.shuoxinda.bluetooth.protocal.util.AESCBCUtil;
-import com.shuoxinda.bluetooth.protocal.util.ByteUtils;
+import com.shuoxinda.bluetooth.sxd.protocal.IProtocol;
+import com.shuoxinda.bluetooth.sxd.protocal.util.AESCBCUtil;
+import com.shuoxinda.bluetooth.sxd.protocal.util.ByteUtils;
 
 /**
  * 数服协议基础类，由这几部分组成

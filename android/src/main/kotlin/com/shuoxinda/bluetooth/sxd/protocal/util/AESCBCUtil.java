@@ -1,4 +1,4 @@
-package com.shuoxinda.bluetooth.protocal.util;
+package com.shuoxinda.bluetooth.sxd.protocal.util;
 
 import java.nio.charset.StandardCharsets;
 

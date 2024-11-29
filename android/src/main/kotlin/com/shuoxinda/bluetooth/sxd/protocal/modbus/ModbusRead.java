@@ -1,8 +1,8 @@
-package com.shuoxinda.bluetooth.protocal.modbus;
+package com.shuoxinda.bluetooth.sxd.protocal.modbus;
 
 
-import com.shuoxinda.bluetooth.protocal.util.ByteUtils;
-import com.shuoxinda.bluetooth.protocal.util.CRC16Util;
+import com.shuoxinda.bluetooth.sxd.protocal.util.ByteUtils;
+import com.shuoxinda.bluetooth.sxd.protocal.util.CRC16Util;
 
 /**
  * 支持0X03与0X04功能码读取
