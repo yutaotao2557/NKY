@@ -1,3 +1,11 @@
 ## 0.0.1
 
-* TODO: Describe initial release.
+* 第一版本,仅完成基本功能
+
+## 0.0.2 
+
+* 完成android指令下发
+
+## 0.0.3
+
+* 完成ios和android接入
