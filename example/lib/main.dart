@@ -6,6 +6,7 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:sxd/sxd.dart';
+import 'package:sxd_example/util_byte.dart';
 import 'package:sxd_example/utils.dart';
 
 void main() {
@@ -75,10 +76,69 @@ class _MyAppState extends State<MyApp> {
     String data = "00f8000600f101198c148f24aa1178f54db8e7a16fda91b3c5c7ce7f7edb00780dbc3fe55af8835e1a05f6cfdae73ad6328544f5a7d4d295ee2233"
         "99dc4cdb66e087051fb4fb74b59265f003481edc67ccca179c56fbfb98ba9369c90f56ccd52e77b8fd74a1c6cb5140d730784aed2f61934c0b911b0f045a8c19158cfc1f2f8b19f3b12b7f39d4180b728b5f1dc6ab5b39c56a0dfe17bc241f76f15fcc3f0584d26a01541ecf40720f4be89e8229e1b19bc3d34fe1cda551e07adf564c11232f7f17b5f8b85696de9345b689fdf9e70a590787799de56de3eb22d3d55445a58dfae4553705fde7ea0e893bdf8cb008e6ef6afeec4b8932ed83";
     var bytes = Uint8List.fromList(hex2Bytes(data));
-    var back = (await _sxdPlugin.parserPro0x19(bytes));
+    var back = (await _sxdPlugin.parserPro0x19(bytes)) as List;
     setState(() {
       _log += "${back}\n";
     });
+    print(back[0]["bytes"]);
+    List<int> content = [];
+    (back[0]["bytes"] as List).forEach((item) {
+      content.add(int.parse(item.toString()));
+    });
+    print("content:$content");
+    print("content:${_parseWifiList(Uint8List.fromList(content.sublist(14,content.length -2)))}");
+    setState(() {
+      _log += "${_parseWifiList(Uint8List.fromList(content.sublist(14,content.length -2)))}\n";
+    });
+  }
+
+
+  // 0, 75, 0, 222, 18, 8, 84, 80, 115, 104, 117, 111, 120, 100,
+  // 225,
+  // 6, 115, 104, 117, 111, 120, 100, 221,
+  // 8, 84, 80, 115, 104, 117, 111, 120, 100, 215,
+  // 10, 69, 83, 80, 95, 67, 70, 52, 49, 51, 57, 215,
+  // 11, 80, 82, 79, 86, 95, 69, 52, 55, 66, 57, 52, 210,
+  // 4, 83, 90, 75, 88, 206,
+  // 11, 67, 104, 101, 110, 89, 97, 110, 84, 101, 115, 116, 205,
+  // 9, 79, 99, 101, 97, 110, 49, 54, 56, 56, 204,
+  // 32, 68, 73, 82, 69, 67, 84, 45, 51, 65, 45, 72, 80, 32, 68, 101, 115, 107, 74, 101, 116, 32, 50, 55, 48, 48, 32, 115, 101, 114, 105, 101, 115, 203,
+  // 4, 83, 90, 75, 88, 200,
+  // 7, 84, 105, 97, 110, 115, 104, 117, 193,
+  // 12, 231, 129, 181, 229, 138, 168, 228, 186, 146, 232, 191, 158, 192,
+  // 12, 84, 80, 45, 76, 73, 78, 75, 95, 57, 56, 69, 66, 191,
+  // 3, 110, 110, 119, 190,
+  // 12, 229, 140, 151, 229, 133, 131, 231, 148, 181, 229, 153, 168, 189,
+  // 12, 229, 140, 151, 229, 133, 131, 231, 148, 181, 229, 153, 168, 186,
+  // 15, 229, 135, 175, 230, 150, 175, 229, 190, 183, 75, 69, 83, 68, 69, 82, 185,
+  // 9, 67, 77, 67, 67, 45, 107, 107, 54, 51, 182
+  static String _parseWifiList(Uint8List data) {
+    // 13, 15, 76, 117, 120, 115, 104, 97, 114, 101, 45, 79, 102, 102, 105, 99, 101, 203, 8, 72, 70, 95, 71, 117, 101, 1
+    int wifiCount = data[0];
+    String beans = "";
+    List<int> nameData = [];
+    bool isNewStart = true;
+    int nameCount = 0;
+
+    for (int i = 1; i < data.length; i++) {
+      if (isNewStart) {
+        isNewStart = false;
+        nameData.clear();
+        nameCount = data[i];
+      } else {
+        if (nameCount > nameData.length) {
+          nameData.add(data[i]);
+        } else if (nameCount >= nameData.length) {
+          // BlueWifiBean wifiBean = BlueWifiBean();
+          String name = ByteUtil.byte2String(Uint8List.fromList(nameData));
+          int sign = data[i];
+          beans += "${name}:${sign}\n";
+          isNewStart = true;
+        }
+      }
+    }
+    print("wifiCount:$wifiCount;list${beans.toString()}");
+    return beans;
   }
 
   Uint8List hex2Bytes(String hex) {
