@@ -24,18 +24,8 @@
                 }
         ];
     } else if([@"DeCodeWithInputData" isEqualToString:call.method]){
-        //NSData *sata = @[];
-
-        //NSLog(@"--------");
-        //NSLog(@"%@",NSStringFromClass([sata class]));
-        //NSLog(@"--------");
         FlutterStandardTypedData *typedData = call.arguments;
         NSData *ttdata = typedData.data;
-        //NSLog(@"%@",NSStringFromClass([ttdata class]));
-        //NSLog(@"--------");
-        //NSData *mmData = [NSKeyedArchiver archivedDataWithRootObject:call.arguments];
-        //NSLog(@"%@",NSStringFromClass(ttdata));
-        //NSLog(@"--------");
         [
             [AECCSetnetManager sharedInstance] DeCodeWithInputData:ttdata
             block:^(NSDictionary * _Nonnull decryptDataDic) {
