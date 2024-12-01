@@ -1,6 +1,6 @@
 # sxd
 
-硕欣达设备配网插件
+NKY-SDK插件
 
 ## Getting Started
 
