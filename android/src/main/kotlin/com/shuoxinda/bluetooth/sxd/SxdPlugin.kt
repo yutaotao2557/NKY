@@ -3,8 +3,8 @@ package com.shuoxinda.bluetooth.sxd
 import android.util.Log
 
 import com.alibaba.fastjson.JSONObject
-import com.shuoxinda.bluetooth.sxd.protocal.proUtil.ProtocolTool
-import com.shuoxinda.bluetooth.sxd.protocal.Param;
+import com.shuoxinda.bluetooth.protocal.proUtil.ProtocolTool
+import com.shuoxinda.bluetooth.protocal.Param;
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -64,7 +64,7 @@ class SxdPlugin : FlutterPlugin, MethodCallHandler {
                 val map = HashMap<String, Any>()
                 map["length"] = it.length
                 map["paramNo"] = it.paramNo
-                map["bytes"] = it.bytes.toIntList()
+                map["data"] = it.readParamValueText()
                 ddData.add(map)
             }
             res.success(ddData)
